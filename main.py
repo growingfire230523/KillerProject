@@ -2,7 +2,7 @@ import streamlit as st
 import json
 import os
 from streamlit_option_menu import option_menu
-import whisper
+# import whisper
 from PIL import Image
 from gemini_utility import (generate_image,load_gemini_pro_model,gemini_pro_vision_response,embedding_model_response,gemini_pro_response,text_to_speech,speech_to_text)
 
@@ -10,8 +10,8 @@ from gemini_utility import (generate_image,load_gemini_pro_model,gemini_pro_visi
 # accessing the working_directory 
 working_directory = os.path.dirname(os.path.abspath(__file__))
 # print(working_directory)
-import openai
-import urllib.request 
+# import openai
+# import urllib.request 
 
 # configuring openai api key --
 config_data = json.load(open(f"{working_directory}/config.json"))
