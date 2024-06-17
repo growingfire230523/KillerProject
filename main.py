@@ -5,17 +5,20 @@ from streamlit_option_menu import option_menu
 # import whisper
 from PIL import Image
 from gemini_utility import (generate_image,load_gemini_pro_model,gemini_pro_vision_response,embedding_model_response,gemini_pro_response,text_to_speech,speech_to_text)
-
+import speech_recognition as sr
+import tempfile
+from pydub import AudioSegment
 
 # accessing the working_directory 
 working_directory = os.path.dirname(os.path.abspath(__file__))
 # print(working_directory)
-# import openai
+import openai
 # import urllib.request 
 
 # configuring openai api key --
-config_data = json.load(open(f"{working_directory}/config.json"))
-OPEN_AI_KEY = config_data["OPENAI_API_KEY"]
+# config_data = json.load(open(f"{working_directory}/config.json"))
+# OPEN_AI_KEY = config_data["OPENAI_API_KEY"]
+openai.api_key = "sk-proj-51gXGw28EmoS5hwKltRbT3BlbkFJYUvYKcJ7fr2ahp4eHBPK"
 # setting up the page configuration 
 st.set_page_config(
     page_title = "OnlyAI",
@@ -33,9 +36,10 @@ st.set_page_config(
 
 with st.sidebar:
 
-    selected = option_menu(menu_title="We're OnlyAI!",options=["GPT","Image Generation","Image Captioning","Text-to-Speech","Speech-to-Text","ChatBot","Embed text","About Me"],menu_icon= 'robot',icons=['question-diamond','file-image-fill','card-image','mic-fill','mic','chat-dots-fill','card-text','person-workspace'],default_index=0)
+    selected = option_menu(menu_title="We're OnlyAI!",options=["GPT","Image Captioning","Text-to-Speech","ChatBot","Embed text","About Me"],menu_icon= 'robot',icons=['question-diamond','card-image','mic-fill','chat-dots-fill','card-text','person-workspace'],default_index=0)
 
 
+# (removed functionalities : {"Image Generation",'file-image-fill'},{"Speech-to-Text",'mic',} )
 # function to translate role between gemini-pro and streamlit terminology
 def translate_role_for_streamlit(user_role):
     if user_role == 'model':
@@ -147,7 +151,7 @@ if selected=="GPT":
 if selected == "Text-to-Speech":
     st.title("🔊 Text-to-Speech")
     input_text = st.text_area(label="Enter text to convert to speech", placeholder="Type something here...")
-    language = st.selectbox("Select language", ["en", "es", "fr", "de", "it"])
+    language = st.selectbox("Select language", ["en","hi", "es", "fr", "de", "it"])
     
     if st.button("Convert to Speech"):
         if input_text:
@@ -161,23 +165,22 @@ if selected == "Text-to-Speech":
             st.warning("Please enter some text to convert to speech.")
 
 
-# Speech-to-Text page
+# # Speech-to-Text page
 if selected == "Speech-to-Text":
     st.title("🗣️ Speech-to-Text")
     uploaded_audio = st.file_uploader("Upload an audio file ...", type=["mp3", "wav", "m4a"])
 
     if st.button("Convert to Text"):
         if uploaded_audio:
-            # Save the uploaded file to the working directory
-            audio_file_path = os.path.join(working_directory, "uploaded_audio.mp3")
+            audio_file_path = os.path.join(os.getcwd(), "uploaded_audio.mp3")
             with open(audio_file_path, "wb") as f:
                 f.write(uploaded_audio.read())
 
             try:
-                # Perform transcription
                 result_text = speech_to_text(audio_file_path)
                 st.markdown(f"**Transcription:** {result_text}")
             except Exception as e:
                 st.error(f"Error during transcription: {e}")
         else:
             st.warning("Please upload an audio file to convert to text.")
+

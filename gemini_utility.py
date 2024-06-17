@@ -7,6 +7,11 @@ from PIL import Image
 # importing image processing lib //
 import google.generativeai as genai
 import urllib.request 
+import speech_recognition as sr
+import tempfile
+
+
+
 # accessing the working_directory 
 working_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -16,7 +21,7 @@ config_data = json.load(open(config_file_path))
 
 # loading the api key //s
 GOOGLE_API_KEY = config_data["GOOGLE_API_KEY"]
-
+openai.api_key = "sk-proj-51gXGw28EmoS5hwKltRbT3BlbkFJYUvYKcJ7fr2ahp4eHBPK"
 # configuring google.generativeai with api key
 genai.configure(api_key=GOOGLE_API_KEY)
 
@@ -78,8 +83,10 @@ def text_to_speech(text, lang='en'):
     tts.save(tts_file)
     return tts_file
 
+
 # Function for speech-to-text
 def speech_to_text(audio_file_path):
     model = whisper.load_model("base")
     result = model.transcribe(audio_file_path)
     return result["text"]
+
