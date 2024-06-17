@@ -5,9 +5,9 @@ from streamlit_option_menu import option_menu
 # import whisper
 from PIL import Image
 from gemini_utility import (generate_image,load_gemini_pro_model,gemini_pro_vision_response,embedding_model_response,gemini_pro_response,text_to_speech,speech_to_text)
-import speech_recognition as sr
-import tempfile
-from pydub import AudioSegment
+# import speech_recognition as sr
+# import tempfile
+# from pydub import AudioSegment
 
 # accessing the working_directory 
 working_directory = os.path.dirname(os.path.abspath(__file__))

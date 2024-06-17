@@ -7,8 +7,8 @@ from PIL import Image
 # importing image processing lib //
 import google.generativeai as genai
 import urllib.request 
-import speech_recognition as sr
-import tempfile
+# import speech_recognition as sr
+# import tempfile
 
 
 
