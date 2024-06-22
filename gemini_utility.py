@@ -26,17 +26,17 @@ openai.api_key = "sk-proj-51gXGw28EmoS5hwKltRbT3BlbkFJYUvYKcJ7fr2ahp4eHBPK"
 genai.configure(api_key=GOOGLE_API_KEY)
 
 # function for image generation using OPENAI key 
-def generate_image(image_description):
-    img_response = openai.Image.create(
-        prompt = image_description,
-        n=1,
-        size = "512x512"
-    )
+# def generate_image(image_description):
+#     img_response = openai.Image.create(
+#         prompt = image_description,
+#         n=1,
+#         size = "512x512"
+#     )
     
-    img_url = img_response['data'][0]['url']
-    urllib.request.urlretrieve(img_url,'img.png')
-    img = Image.open("img.png")
-    return img
+#     img_url = img_response['data'][0]['url']
+#     urllib.request.urlretrieve(img_url,'img.png')
+#     img = Image.open("img.png")
+#     return img
 
 # function to load model gemini-pro-model for chatbot
 def load_gemini_pro_model():

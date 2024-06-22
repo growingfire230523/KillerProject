@@ -1,0 +1,4 @@
+Model: Stable Diffusion Prompt: A vibrant, luminescent oasis in the midst of a sprawling interstellar desert with planets acting as "sand dunes". Shimmering comet creatures draw water from a glowing nebula well.
+Model: Stable Diffusion Prompt: A massive ancient tree with rings and branches that twist and twine to form the shape of an hourglass, where each leaf represents a moment in history.
+Model: Stable Diffusion Prompt: A multi-storied library suspended over a cascading waterfall. The books fly open, releasing colorful clouds of knowledge, while ethereal creatures absorb wisdom in mid-air.
+Model: Stable Diffusion Prompt: A bustling futuristic city encapsulated within a glass bottle on a traveler's desk. Tiny hovercars move in and out of the bottle neck, and minuscule lights twinkle as day turns to night.

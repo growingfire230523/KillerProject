@@ -6,3 +6,5 @@ openai
 whisper
 gtts
 # urllib.request
+replicate
+requests
