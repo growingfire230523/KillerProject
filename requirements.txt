@@ -5,9 +5,7 @@ streamlit-option-menu==0.3.12
 openai
 whisper
 gtts
-# urllib.request
 replicate
 requests
 speech_recognition
 pydub
-re
