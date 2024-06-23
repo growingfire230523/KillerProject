@@ -8,3 +8,6 @@ gtts
 # urllib.request
 replicate
 requests
+speech_recognition
+pydub
+re
