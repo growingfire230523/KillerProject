@@ -7,5 +7,5 @@ whisper
 gtts
 replicate
 requests
-speech_recognition
+SpeechRecognition
 pydub
