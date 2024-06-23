@@ -4,10 +4,10 @@ import os
 from streamlit_option_menu import option_menu
 # import whisper
 from PIL import Image
-from gemini_utility import (load_gemini_pro_model,gemini_pro_vision_response,embedding_model_response,gemini_pro_response,text_to_speech,speech_to_text)
-# import speech_recognition as sr
+from gemini_utility import (load_gemini_pro_model,gemini_pro_vision_response,embedding_model_response,gemini_pro_response,text_to_speech)
+import speech_recognition as sr
 # import tempfile
-# from pydub import AudioSegment
+from pydub import AudioSegment
 import replicate as rp
 import requests
 import re
@@ -43,10 +43,10 @@ class NSFWError(Exception):
 
 with st.sidebar:
 
-    selected = option_menu(menu_title="We're OnlyAI!",options=["GPT","Image Generation","Image Captioning","Text-to-Speech","ChatBot","Embed text","About Me"],menu_icon= 'robot',icons=['question-diamond','file-image-fill','card-image','mic-fill','chat-dots-fill','card-text','person-workspace'],default_index=0)
+    selected = option_menu(menu_title="We're OnlyAI!",options=["ChatBot","Image Generation","Image Captioning","Text-to-Speech","Speech-to-Text","GPT","Embed text","About Me"],menu_icon= 'robot',icons=['chat-dots-fill','file-image-fill','card-image','mic-fill','mic','question-diamond','card-text','person-workspace'],default_index=0)
 
 
-# (removed functionalities : {"Image Generation",'file-image-fill'},{"Speech-to-Text",'mic',} )
+# (removed functionalities : {"Image Generation",'file-image-fill'},{,,} )
 # function to translate role between gemini-pro and streamlit terminology
 def translate_role_for_streamlit(user_role):
     if user_role == 'model':
@@ -74,6 +74,24 @@ if selected=="About Me":
             # st.button(label="<Azure>",on_click="http://www.azureiitd.com/")
 
         
+def convert_audio_to_wav(audio_file):
+    audio = AudioSegment.from_file(audio_file)
+    wav_file = audio_file.name.split(".")[0] + ".wav"
+    audio.export(wav_file, format="wav")
+    return wav_file
+
+def speech_to_text(audio_file):
+    recognizer = sr.Recognizer()
+    with sr.AudioFile(audio_file) as source:
+        audio = recognizer.record(source)
+        try:
+            text = recognizer.recognize_google(audio)
+            return text
+        except sr.UnknownValueError:
+            return "Could not understand audio"
+        except sr.RequestError as e:
+            return f"Error: {str(e)}"
+
 # chatbot page //
 if selected=="ChatBot":
     model = load_gemini_pro_model()
@@ -158,7 +176,8 @@ if selected=="GPT":
 if selected == "Text-to-Speech":
     st.title("🔊 Text-to-Speech")
     input_text = st.text_area(label="Enter text to convert to speech", placeholder="Type something here...")
-    language = st.selectbox("Select language", ["en","hi", "es", "fr", "de", "it"])
+    language = st.selectbox("Select language", ["en","hi"])
+    # , "es", "fr", "de", "it"
     
     if st.button("Convert to Speech"):
         if input_text:
@@ -175,21 +194,21 @@ if selected == "Text-to-Speech":
 # # Speech-to-Text page
 if selected == "Speech-to-Text":
     st.title("🗣️ Speech-to-Text")
-    uploaded_audio = st.file_uploader("Upload an audio file ...", type=["mp3", "wav", "m4a"])
+    st.write("Upload an audio file and convert it to text.")
 
-    if st.button("Convert to Text"):
-        if uploaded_audio:
-            audio_file_path = os.path.join(os.getcwd(), "uploaded_audio.mp3")
-            with open(audio_file_path, "wb") as f:
-                f.write(uploaded_audio.read())
+    uploaded_file = st.file_uploader("Choose an audio file", type=["wav"])
+    # removed file type - ["mp3"]
 
-            try:
-                result_text = speech_to_text(audio_file_path)
-                st.markdown(f"**Transcription:** {result_text}")
-            except Exception as e:
-                st.error(f"Error during transcription: {e}")
-        else:
-            st.warning("Please upload an audio file to convert to text.")
+    if uploaded_file is not None:
+        file_details = {"Filename": uploaded_file.name, "FileType": uploaded_file.type}
+        # st.write(file_details)
+
+        if uploaded_file.type == "audio/mp3":
+            uploaded_file = convert_audio_to_wav(uploaded_file)
+
+        text = speech_to_text(uploaded_file)
+        st.write("Converted Text:")
+        st.write(text)
 
 
 # image generation page 
